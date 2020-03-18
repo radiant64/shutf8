@@ -154,5 +154,9 @@ shutf8_seq shutf8_encode_codepoint(shutf8_char32 codepoint) {
     return (shutf8_seq) { len, o[0], o[1], o[2], o[3] };
 }
 
+#ifdef __cplusplus
+}
+#endif
+
 #endif
 
