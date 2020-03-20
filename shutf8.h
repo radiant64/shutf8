@@ -41,7 +41,8 @@ extern "C" {
 #endif
 
 /**
- * @brief A platform specific type corresponding to a 32 bit signed codepoint.
+ * @brief A platform specific type corresponding to a 32 bit signed Unicode
+ * codepoint.
  */
 typedef SHUTF8_UTF32_C shutf8_utf32_c;
 
@@ -77,7 +78,7 @@ const char* shutf8_step(const char* cursor);
  */
 shutf8_seq shutf8_encode_codepoint(shutf8_utf32_c codepoint);
 
-#define SHUTF8_CHECK_MALFORMED(c) if ((c & 0xc0) != 0x80) { return -1; }
+#define SHUTF8_CHECK_MALFORMED(C) if ((C & 0xc0) != 0x80) { return -1; }
 
 shutf8_char32 shutf8_decode(const char* cursor) {
     const unsigned char* c = cursor;
