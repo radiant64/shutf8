@@ -47,12 +47,13 @@ extern "C" {
 typedef SHUTF8_UTF32_C shutf8_utf32_c;
 
 /**
- * @brief A type representing a UTF-8 encoded octet sequence.
+ * @brief A type representing a Unicode codepoint in the form of a UTF-8
+ * encoded octet sequence.
  * */
 typedef struct {
     unsigned char len; /**< Number of bytes in the sequence. */
     const unsigned char octet[4]; /**< Array of individual octets. */
-} shutf8_seq;
+} shutf8_utf8_c;
 
 /**
  * @brief Decode the UTF-8 encoded codepoint residing at the supplied address
@@ -76,11 +77,11 @@ const char* shutf8_step(const char* cursor);
  * @param codepoint UTF-32 codepoint.
  * @return The corresponding UTF-8 sequence.
  */
-shutf8_seq shutf8_encode_codepoint(shutf8_utf32_c codepoint);
+shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint);
 
 #define SHUTF8_CHECK_MALFORMED(C) if ((C & 0xc0) != 0x80) { return -1; }
 
-shutf8_char32 shutf8_decode(const char* cursor) {
+shutf8_utf32_c shutf8_decode(const char* cursor) {
     const unsigned char* c = cursor;
     if ((*c & 0x80) && (*c < 0xc0) || (*c >= 0xf1)) {
         /* Malformed UTF-8 character. */
@@ -126,13 +127,13 @@ const char* shutf8_step(const char* cursor) {
     }
 }
 
-shutf8_seq shutf8_encode_codepoint(shutf8_char32 codepoint) {
+shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
     unsigned char len = 1;
     char o[4];
 
     if (codepoint > 0x10ffff) {
         /* Illegal codepoint. */
-        return (shutf8_seq) { 0 };
+        return (shutf8_utf8_c) { 0 };
     } else if (codepoint > 0xffff) {
         len = 4;
         o[0] = 0xf0 | (codepoint >> 18);
@@ -152,7 +153,7 @@ shutf8_seq shutf8_encode_codepoint(shutf8_char32 codepoint) {
         o[0] = codepoint;
     }
     
-    return (shutf8_seq) { len, o[0], o[1], o[2], o[3] };
+    return (shutf8_utf8_c) { len, o[0], o[1], o[2], o[3] };
 }
 
 #ifdef __cplusplus
