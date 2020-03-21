@@ -4,7 +4,7 @@
 
 # Binaries.
 *.o
-test/test_shutf8
+tests/test_shutf8
 
 # Doxygen stuff.
 doxygen/html
