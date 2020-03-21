@@ -1,4 +1,4 @@
-CFLAGS += -std=c89
+CFLAGS += -std=c89 -g
 
 .PHONY : all
 all : test_shutf8
@@ -7,10 +7,12 @@ all : test_shutf8
 run_tests : test_shutf8
 	./test_shutf8
 
-test_shutf8 : ../shutf8.h shtest.h test_shutf8.o
-	$(CC) -std=c89 -o $@ -g test_shutf8.o
+test_shutf8 : test_shutf8.o test_decode_codepoint.o
+	$(CC) -std=c89 -o $@ -g $^
+
+test_decode_codepoint.o : shtest.h ../shutf8.h
 
 .PHONY: clean
 clean :
-	rm -f test_shutf8 test_shutf8.o
+	rm -f test_shutf8 test_shutf8.o test_decode_codepoint.o
 
