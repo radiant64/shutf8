@@ -1,3 +1,5 @@
+CFLAGS += -std=c89
+
 .PHONY : all
 all : test_shutf8
 

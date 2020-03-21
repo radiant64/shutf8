@@ -31,6 +31,8 @@
 extern "C" {
 #endif
 
+#include <stdlib.h>
+#include <string.h>
 #ifndef SHUTF8_UTF32_C
 #if __STDC_VERSION__ >= 19990L
 #include <stdint.h>
@@ -62,7 +64,7 @@ typedef struct shutf8_utf8_c {
  * @param cursor Pointer into a UTF-8 encoded string.
  * @return The Unicode codepoint translated into a #shutf8_utf32_c number.
  */
-shutf8_utf32_c shutf8_decode(const char* cursor);
+shutf8_utf32_c shutf8_decode_codepoint(const char* cursor);
 
 /**
  * @brief Returns a pointer to the next codepoint in the supplied UTF-8 encoded
@@ -74,6 +76,14 @@ shutf8_utf32_c shutf8_decode(const char* cursor);
 const char* shutf8_step(const char* cursor);
 
 /**
+ * @brief Determines how many octets the UTF-32 codepoint would consist of when
+ * recoded to UTF-8.
+ * @param codepoint UTF-32 codepoint.
+ * @return A number n such that 1 <= n <= 4 for a valid codepoint. 0 otherwise.
+ */
+unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint);
+
+/**
  * @brief Encode a UTF-32 codepoint into a UTF-8 sequence.
  * @param codepoint UTF-32 codepoint.
  * @return The corresponding UTF-8 sequence.
@@ -81,12 +91,24 @@ const char* shutf8_step(const char* cursor);
 shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint);
 
 /**
+ * @brief Encode a UTF-32 string to UTF-8, allocating space for the resulting
+ * string on the heap.
+ *
+ * Caller is responsible for freeing the memory of the returned string.
+ *
+ * @param source A string of @ref shutf8_utf32_c codepoints.
+ * @return A newly allocated string of UTF-8 characters, or NULL on failure
+ * (illegal codepoint or failed memory allocation).
+ */
+char* shutf8_encode(const shutf8_utf32_c* source);
+
+/**
  * @cond NON_DOXYGEN
  */
 
 #define SHUTF8_CHECK_MALFORMED(C) if ((C & 0xc0) != 0x80) { return -1; }
 
-shutf8_utf32_c shutf8_decode(const char* cursor) {
+shutf8_utf32_c shutf8_decode_codepoint(const char* cursor) {
     const unsigned char* c = cursor;
     if ((*c & 0x80) && (*c < 0xc0) || (*c >= 0xf1)) {
         /* Malformed UTF-8 character. */
@@ -132,33 +154,83 @@ const char* shutf8_step(const char* cursor) {
     }
 }
 
-shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
-    unsigned char len = 1;
-    char b[4];
-
-    if (codepoint > 0x10ffff) {
+unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint) {
+    if (codepoint < 0) {
         /* Illegal codepoint. */
-        return (shutf8_utf8_c) { 0 };
-    } else if (codepoint > 0xffff) {
-        len = 4;
+        return 0;
+    } else if (codepoint < 0x80) {
+        return 1;
+    } else if (codepoint < 0x800) {
+        return 2;
+    } else if (codepoint < 0x10000) {
+        return 3;
+    } else if (codepoint < 0x110000) {
+        return 4;
+    } 
+    /* Illegal codepoint. */
+    return 0;
+}
+
+shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
+    char b[4];
+    unsigned char len = shutf8_encoded_length(codepoint);
+
+    switch (len) {
+    case 4:
         b[0] = 0xf0 | (codepoint >> 18);
         b[1] = 0x80 | ((codepoint >> 12) & 0x3f);
         b[2] = 0x80 | ((codepoint >> 6) & 0x3f);
         b[3] = 0x80 | (codepoint & 0x3f);
-    } else if (codepoint > 0x7ff) {
-        len = 3;
+        break;
+    case 3:
         b[0] = 0xe0 | (codepoint >> 12);
         b[1] = 0x80 | ((codepoint >> 6) & 0x3f);
         b[2] = 0x80 | (codepoint & 0x3f);
-    } else if (codepoint > 0x7f) {
-        len = 2;
+        break;
+    case 2:
         b[0] = 0xc0 | (codepoint >> 6);
         b[1] = 0x80 | (codepoint & 0x3f);
-    } else {
+        break;
+    case 1:
         b[0] = codepoint;
+        break;
+    default:
+        /* Illegal codepoint. */
+        return (shutf8_utf8_c) { 0 };
     }
     
     return (shutf8_utf8_c) { len, b[0], b[1], b[2], b[3] };
+}
+
+char* shutf8_encode(const shutf8_utf32_c* source) {
+    char* target;
+    size_t c_len;
+    size_t len = 0;
+    size_t i = 0;
+    
+    while (source[i]) {
+        c_len = shutf8_encoded_length(source[i++]);
+        if (!c_len) {
+            return NULL;
+        }
+        len += c_len;
+    }
+
+    target = malloc(len + 1);
+    if (!target) {
+        return NULL;
+    }
+
+    i = 0;
+    len = 0;
+    while (source[i]) {
+        shutf8_utf8_c c_encoded = shutf8_encode_codepoint(source[i++]);
+        memcpy(&target[len], c_encoded.b, c_encoded.len);
+        len += c_encoded.len;
+    }
+    target[len] = '\0';
+    
+    return target;
 }
 
 /**
