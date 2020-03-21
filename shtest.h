@@ -21,7 +21,7 @@ extern "C" {
     static t_test IDENT = { #IDENT, IDENT ## _func };\
     static void IDENT ## _func(t_test* _test)
 
-#define TESTSUITE(NAME, ...) t_test* NAME[] = { __VA_ARGS__, NULL };
+#define TESTSUITE(NAME) t_test* NAME[]
 
 #define REQUIRE(CONDITION) if (!(CONDITION)) {\
     _test->error_outcome = #CONDITION " (at " __FILE__ ":" _STR(__LINE__) ")";\

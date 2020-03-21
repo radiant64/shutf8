@@ -52,7 +52,7 @@ typedef SHUTF8_UTF32_C shutf8_utf32_c;
  * */
 typedef struct {
     unsigned char len; /**< Number of bytes in the sequence. */
-    const unsigned char octet[4]; /**< Array of individual octets. */
+    const unsigned char b[4]; /**< Array of individual octets. */
 } shutf8_utf8_c;
 
 /**
@@ -129,31 +129,31 @@ const char* shutf8_step(const char* cursor) {
 
 shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
     unsigned char len = 1;
-    char o[4];
+    char b[4];
 
     if (codepoint > 0x10ffff) {
         /* Illegal codepoint. */
         return (shutf8_utf8_c) { 0 };
     } else if (codepoint > 0xffff) {
         len = 4;
-        o[0] = 0xf0 | (codepoint >> 18);
-        o[1] = 0x80 | ((codepoint >> 12) & 0x3f);
-        o[2] = 0x80 | ((codepoint >> 6) & 0x3f);
-        o[3] = 0x80 | (codepoint & 0x3f);
+        b[0] = 0xf0 | (codepoint >> 18);
+        b[1] = 0x80 | ((codepoint >> 12) & 0x3f);
+        b[2] = 0x80 | ((codepoint >> 6) & 0x3f);
+        b[3] = 0x80 | (codepoint & 0x3f);
     } else if (codepoint > 0x7ff) {
         len = 3;
-        o[0] = 0xe0 | (codepoint >> 12);
-        o[1] = 0x80 | ((codepoint >> 6) & 0x3f);
-        o[2] = 0x80 | (codepoint & 0x3f);
+        b[0] = 0xe0 | (codepoint >> 12);
+        b[1] = 0x80 | ((codepoint >> 6) & 0x3f);
+        b[2] = 0x80 | (codepoint & 0x3f);
     } else if (codepoint > 0x7f) {
         len = 2;
-        o[0] = 0xc0 | (codepoint >> 6);
-        o[1] = 0x80 | (codepoint & 0x3f);
+        b[0] = 0xc0 | (codepoint >> 6);
+        b[1] = 0x80 | (codepoint & 0x3f);
     } else {
-        o[0] = codepoint;
+        b[0] = codepoint;
     }
     
-    return (shutf8_utf8_c) { len, o[0], o[1], o[2], o[3] };
+    return (shutf8_utf8_c) { len, b[0], b[1], b[2], b[3] };
 }
 
 #ifdef __cplusplus
