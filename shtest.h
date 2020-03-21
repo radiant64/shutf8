@@ -18,10 +18,13 @@ extern "C" {
 #define _STR(N) _STR_EXPAND(N)
 #define _STR_EXPAND(N) #N
 #define TEST(IDENT) static void IDENT ## _func(t_test*);\
-    static t_test IDENT = { #IDENT, IDENT ## _func };\
+    static t_test IDENT ## obj = { #IDENT, IDENT ## _func };\
+    static t_test* IDENT = &IDENT ## obj;\
     static void IDENT ## _func(t_test* _test)
 
-#define TESTSUITE(NAME) t_test* NAME[]
+#define TESTSUITE(NAME) t_testsuite NAME ## _obj = { #NAME };\
+    t_testsuite* NAME = &NAME ## _obj;\
+    NAME ## _obj.tests = (t_test*[]) 
 
 #define REQUIRE(CONDITION) if (!(CONDITION)) {\
     _test->error_outcome = #CONDITION " (at " __FILE__ ":" _STR(__LINE__) ")";\
@@ -36,24 +39,34 @@ typedef struct t_test {
     const char* error_outcome;
 } t_test;
 
-static int run_tests(t_test** tests) {
-    t_test* current = *tests;
-    int successful = 0;
-    int total = 0;
+typedef struct {
+    const char* name;
+    int successful;
+    int total;
+    t_test** tests;
+} t_testsuite;
 
+static void run_tests(t_testsuite* suite) {
+    fprintf(stdout, "----------------\nRunning tests in %s:\n\n", suite->name);
+    t_test* current = *(suite->tests);
     while(current) {
         current->body(current);
-        fprintf(stdout, "%s ... ", current->name);
+        fprintf(stdout, "-> %s ...\t", current->name);
         if (current->error_outcome == NULL) {
-            successful++;
+            suite->successful++;
             fprintf(stdout, "OK\n");
         } else {
             fprintf(stdout, "FAILED: %s\n", current->error_outcome);
         }
-        current = tests[++total];
+        current = suite->tests[++(suite->total)];
     }
 
-    fprintf(stdout, "\n\%d/%d tests successful\n", successful, total);
+    fprintf(
+        stdout,
+        "\n\%d/%d tests successful\n----------------\n",
+        suite->successful,
+        suite->total
+    );
 }
 
 #ifdef __cplusplus
