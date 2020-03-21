@@ -6,3 +6,6 @@
 *.o
 test/test_shutf8
 
+# Doxygen stuff.
+doxygen/html
+

@@ -4,8 +4,8 @@
  * @file shutf8.h
  * Single Header UTF-8
  * version 1.0.0
- * 
- * Copyright (c) Martin Evald
+ */ 
+/* Copyright (c) Martin Evald
  *
  * MIT License
  *
@@ -41,6 +41,7 @@ extern "C" {
 #endif
 
 /**
+ * @typedef shutf8_utf32_c
  * @brief A platform specific type corresponding to a 32 bit signed Unicode
  * codepoint.
  */
@@ -50,7 +51,7 @@ typedef SHUTF8_UTF32_C shutf8_utf32_c;
  * @brief A type representing a Unicode codepoint in the form of a UTF-8
  * encoded octet sequence.
  * */
-typedef struct {
+typedef struct shutf8_utf8_c {
     unsigned char len; /**< Number of bytes in the sequence. */
     const unsigned char b[4]; /**< Array of individual octets. */
 } shutf8_utf8_c;
@@ -59,7 +60,7 @@ typedef struct {
  * @brief Decode the UTF-8 encoded codepoint residing at the supplied address
  * into a UTF-32 value.
  * @param cursor Pointer into a UTF-8 encoded string.
- * @return The Unicode codepoint translated into a @ref shutf8_utf32_c number.
+ * @return The Unicode codepoint translated into a #shutf8_utf32_c number.
  */
 shutf8_utf32_c shutf8_decode(const char* cursor);
 
@@ -78,6 +79,10 @@ const char* shutf8_step(const char* cursor);
  * @return The corresponding UTF-8 sequence.
  */
 shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint);
+
+/**
+ * @cond NON_DOXYGEN
+ */
 
 #define SHUTF8_CHECK_MALFORMED(C) if ((C & 0xc0) != 0x80) { return -1; }
 
@@ -155,6 +160,10 @@ shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
     
     return (shutf8_utf8_c) { len, b[0], b[1], b[2], b[3] };
 }
+
+/**
+ * @endcond
+ */
 
 #ifdef __cplusplus
 }
