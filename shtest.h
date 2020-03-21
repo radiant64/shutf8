@@ -53,7 +53,7 @@ static int run_tests(t_test** tests) {
         current = tests[++total];
     }
 
-    fprintf(stdout, "\n\%d/%d tests successful\n", successful, total);
+    fprintf(stdout, "\n%d/%d tests successful\n", successful, total);
 }
 
 #ifdef __cplusplus
