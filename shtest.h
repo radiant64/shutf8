@@ -63,7 +63,7 @@ static void run_tests(t_testsuite* suite) {
 
     fprintf(
         stdout,
-        "\n\%d/%d tests successful\n----------------\n",
+        "\n%d/%d tests successful\n----------------\n",
         suite->successful,
         suite->total
     );
