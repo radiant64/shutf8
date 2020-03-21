@@ -59,7 +59,7 @@ typedef struct {
  * @brief Decode the UTF-8 encoded codepoint residing at the supplied address
  * into a UTF-32 value.
  * @param cursor Pointer into a UTF-8 encoded string.
- * @return The Unicode codepoint translated into a @ref shutf8_char32 number.
+ * @return The Unicode codepoint translated into a @ref shutf8_utf32_c number.
  */
 shutf8_utf32_c shutf8_decode(const char* cursor);
 
