@@ -1,4 +1,4 @@
-#include "shutf8.h"
+#include "../shutf8.h"
 #include "shtest.h"
 
 TEST(verify_shutf8_utf32_c_is_large_enough) {

@@ -1,2 +1,8 @@
+# Vim backups.
 *~
 .*.sw?
+
+# Binaries.
+*.o
+test/test_shutf8
+
