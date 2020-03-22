@@ -40,19 +40,13 @@ TEST(verify_decode_codepoint_invalid_utf8_sequence_fails) {
     REQUIRE(codepoint == -1);
 }
 
-int run_decode_codepoint_suite(void) {
-    TESTSUITE(decode_codepoint) {
-        verify_shutf8_utf32_c_is_large_enough,
-        verify_decode_codepoint_valid_single_byte_is_working,
-        verify_decode_codepoint_valid_2_bytes_is_working,
-        verify_decode_codepoint_valid_3_bytes_is_working,
-        verify_decode_codepoint_valid_4_bytes_is_working,
-        verify_decode_codepoint_invalid_utf8_first_byte_fails,
-        verify_decode_codepoint_invalid_utf8_sequence_fails,
-        NULL
-    };
-    
-    run_tests(decode_codepoint);
-    return (decode_codepoint->total - decode_codepoint->successful);
-}
+TESTSUITE(decode_codepoint)
+    verify_shutf8_utf32_c_is_large_enough,
+    verify_decode_codepoint_valid_single_byte_is_working,
+    verify_decode_codepoint_valid_2_bytes_is_working,
+    verify_decode_codepoint_valid_3_bytes_is_working,
+    verify_decode_codepoint_valid_4_bytes_is_working,
+    verify_decode_codepoint_invalid_utf8_first_byte_fails,
+    verify_decode_codepoint_invalid_utf8_sequence_fails
+END_TESTSUITE
 

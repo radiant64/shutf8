@@ -64,7 +64,7 @@ typedef struct shutf8_utf8_c {
  * @param cursor Pointer into a UTF-8 encoded string.
  * @return The Unicode codepoint translated into a #shutf8_utf32_c number.
  */
-shutf8_utf32_c shutf8_decode_codepoint(const char* cursor);
+static shutf8_utf32_c shutf8_decode_codepoint(const char* cursor);
 
 /**
  * @brief Returns a pointer to the next codepoint in the supplied UTF-8 encoded
@@ -73,7 +73,7 @@ shutf8_utf32_c shutf8_decode_codepoint(const char* cursor);
  * @return A pointer to the beginning of the next codepoint in the provided
  * string.
  */
-const char* shutf8_step(const char* cursor);
+static const char* shutf8_step(const char* cursor);
 
 /**
  * @brief Determines how many octets the UTF-32 codepoint would consist of when
@@ -81,14 +81,14 @@ const char* shutf8_step(const char* cursor);
  * @param codepoint UTF-32 codepoint.
  * @return A number n such that 1 <= n <= 4 for a valid codepoint. 0 otherwise.
  */
-unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint);
+static unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint);
 
 /**
  * @brief Encode a UTF-32 codepoint into a UTF-8 sequence.
  * @param codepoint UTF-32 codepoint.
  * @return The corresponding UTF-8 sequence.
  */
-shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint);
+static shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint);
 
 /**
  * @brief Encode a UTF-32 string to UTF-8, allocating space for the resulting
@@ -100,15 +100,13 @@ shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint);
  * @return A newly allocated string of UTF-8 characters, or NULL on failure
  * (illegal codepoint or failed memory allocation).
  */
-char* shutf8_encode(const shutf8_utf32_c* source);
+static char* shutf8_encode(const shutf8_utf32_c* source);
 
 /**
  * @cond NON_DOXYGEN
  */
 
-#define SHUTF8_CHECK_MALFORMED(C) if ((C & 0xc0) != 0x80) { return -1; }
-
-shutf8_utf32_c shutf8_decode_codepoint(const char* cursor) {
+static shutf8_utf32_c shutf8_decode_codepoint(const char* cursor) {
     const unsigned char* c = cursor;
     if ((*c & 0x80) && (*c < 0xc0) || (*c >= 0xf1)) {
         /* Malformed UTF-8 character. */
@@ -116,18 +114,21 @@ shutf8_utf32_c shutf8_decode_codepoint(const char* cursor) {
     }
     switch (*c & 0xf0) {
     case 0xc0:
-        SHUTF8_CHECK_MALFORMED(c[1])
+        if ((c[1] & 0xc0) != 0x80) {
+            return -1;
+        }
         /* Mask: 00011111 00111111 */
         return ((c[0] & 0x1f) << 6) | (c[1] & 0x3f);
     case 0xe0:
-        SHUTF8_CHECK_MALFORMED(c[1])
-        SHUTF8_CHECK_MALFORMED(c[2])
+        if (((c[1] | c[2]) & 0xc0) != 0x80) {
+            return -1;
+        }
         /* Mask: 00001111 00111111 00111111 */
         return ((c[0] & 0x0f) << 12) | ((c[1] & 0x3f) << 6) | (c[2] & 0x3f);
     case 0xf0:
-        SHUTF8_CHECK_MALFORMED(c[1])
-        SHUTF8_CHECK_MALFORMED(c[2])
-        SHUTF8_CHECK_MALFORMED(c[3])
+        if (((c[1] | c[2] | c[3]) & 0xc0) != 0x80) {
+            return -1;
+        }
         /* Mask: 00000111 00111111 00111111 00111111 */
         return ((c[0] & 0x07) << 18)
             | ((c[1] & 0x3f) << 12)
@@ -138,23 +139,34 @@ shutf8_utf32_c shutf8_decode_codepoint(const char* cursor) {
     }
 }
 
-#undef SHUTF8_CHECK_MALFORMED
-
-const char* shutf8_step(const char* cursor) {
-    switch (*cursor & 0xf0) {
+static const char* shutf8_step(const char* cursor) {
+    const unsigned char* c = cursor;
+    if ((*c & 0x80) && (*c < 0xc0) || (*c >= 0xf1)) {
+        /* Malformed UTF-8 character. */
+        return cursor;;
+    }
+    switch (*c & 0xf0) {
     case 0xf0:
+        if (((c[1] | c[2] | c[3]) & 0xc0) != 0x80) {
+            return cursor;
+        }
         return &(cursor[4]);
     case 0xe0:
+        if (((c[1] | c[2]) & 0xc0) != 0x80) {
+            return cursor;
+        }
         return &(cursor[3]);
     case 0xc0:
+        if ((c[1] & 0xc0) != 0x80) {
+            return cursor;
+        }
         return &(cursor[2]);
     default:
-        /* Treat malformed codepoints as single bytes. */
         return &(cursor[1]);
     }
 }
 
-unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint) {
+static unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint) {
     if (codepoint < 0) {
         /* Illegal codepoint. */
         return 0;
@@ -171,7 +183,7 @@ unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint) {
     return 0;
 }
 
-shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
+static shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
     char b[4];
     unsigned char len = shutf8_encoded_length(codepoint);
 
@@ -202,7 +214,7 @@ shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
     return (shutf8_utf8_c) { len, b[0], b[1], b[2], b[3] };
 }
 
-char* shutf8_encode(const shutf8_utf32_c* source) {
+static char* shutf8_encode(const shutf8_utf32_c* source) {
     char* target;
     size_t c_len;
     size_t len = 0;

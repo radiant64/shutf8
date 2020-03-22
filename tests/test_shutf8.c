@@ -1,6 +1,16 @@
 #include "test_decode_codepoint.h"
+#include "test_step.h"
 
 int main(int argc, char** argv) {
-    return run_decode_codepoint_suite();
+    {
+        t_testsuite suite = prepare_decode_codepoint();
+        run_tests(&suite);
+    }
+    {
+        t_testsuite suite = prepare_step();
+        run_tests(&suite);
+    }
+    return 0;/*(suite.total - suite.successful);
+*/
 }
 

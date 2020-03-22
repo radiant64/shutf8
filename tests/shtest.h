@@ -22,9 +22,20 @@ extern "C" {
     static t_test* IDENT = &IDENT ## obj;\
     static void IDENT ## _func(t_test* _test)
 
-#define TESTSUITE(NAME) t_testsuite NAME ## _obj = { #NAME };\
-    t_testsuite* NAME = &NAME ## _obj;\
-    NAME ## _obj.tests = (t_test*[]) 
+#define TESTSUITE(NAME) t_testsuite prepare_ ## NAME(void) {\
+    return (t_testsuite) {\
+        #NAME,\
+        0,\
+        0,\
+        {
+
+#define END_TESTSUITE ,\
+            NULL\
+        }\
+    };\
+}
+
+#define EXTERN_TESTSUITE(NAME) t_testsuite prepare_ ## NAME(void);
 
 #define REQUIRE(CONDITION) if (!(CONDITION)) {\
     _test->error_outcome = #CONDITION " (at " __FILE__ ":" _STR(__LINE__) ")";\
@@ -43,11 +54,11 @@ typedef struct {
     const char* name;
     int successful;
     int total;
-    t_test** tests;
+    t_test* tests[256];
 } t_testsuite;
 
 static void run_tests(t_testsuite* suite) {
-    fprintf(stdout, "----------------\nRunning tests in %s:\n\n", suite->name);
+    fprintf(stdout, "Running tests in %s:\n\n", suite->name);
     t_test* current = *(suite->tests);
     while(current) {
         current->body(current);

@@ -3,7 +3,7 @@
 
 #include "shtest.h"
 
-int run_decode_codepoint_suite(void);
+EXTERN_TESTSUITE(decode_codepoint);
 
 #endif
 
