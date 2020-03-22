@@ -59,7 +59,7 @@ typedef struct shutf8_utf8_c {
 } shutf8_utf8_c;
 
 /**
- * @brief Decode the UTF-8 encoded codepoint residing at the supplied address
+ * @brief Decodes the UTF-8 encoded codepoint residing at the supplied address
  * into a UTF-32 value.
  * @param cursor Pointer into a UTF-8 encoded string.
  * @return The Unicode codepoint translated into a #shutf8_utf32_c number.
@@ -84,14 +84,14 @@ static const char* shutf8_step(const char* cursor);
 static unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint);
 
 /**
- * @brief Encode a UTF-32 codepoint into a UTF-8 sequence.
+ * @brief Encodes a UTF-32 codepoint into a UTF-8 sequence.
  * @param codepoint UTF-32 codepoint.
  * @return The corresponding UTF-8 sequence.
  */
 static shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint);
 
 /**
- * @brief Encode a UTF-32 string to UTF-8, allocating space for the resulting
+ * @brief Encodes a UTF-32 string to UTF-8, allocating space for the resulting
  * string on the heap.
  *
  * Caller is responsible for freeing the memory of the returned string.

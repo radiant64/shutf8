@@ -60,7 +60,7 @@ typedef struct <a class="el" href="shutf8_8h.html#structshutf8__utf8__c">shutf8_
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:afce88752f1406b12380fb4f98aff2141"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#afce88752f1406b12380fb4f98aff2141">shutf8_decode_codepoint</a> (const char *cursor)</td></tr>
-<tr class="memdesc:afce88752f1406b12380fb4f98aff2141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decode the UTF-8 encoded codepoint residing at the supplied address into a UTF-32 value.  <a href="#afce88752f1406b12380fb4f98aff2141">More...</a><br /></td></tr>
+<tr class="memdesc:afce88752f1406b12380fb4f98aff2141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes the UTF-8 encoded codepoint residing at the supplied address into a UTF-32 value.  <a href="#afce88752f1406b12380fb4f98aff2141">More...</a><br /></td></tr>
 <tr class="separator:afce88752f1406b12380fb4f98aff2141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a1ac2c89e8199c3254205938fa73128"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a2a1ac2c89e8199c3254205938fa73128">shutf8_step</a> (const char *cursor)</td></tr>
 <tr class="memdesc:a2a1ac2c89e8199c3254205938fa73128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the next codepoint in the supplied UTF-8 encoded string.  <a href="#a2a1ac2c89e8199c3254205938fa73128">More...</a><br /></td></tr>
@@ -69,10 +69,10 @@ Functions</h2></td></tr>
 <tr class="memdesc:a4f225b68f756f2406782a4ba90b933ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how many octets the UTF-32 codepoint would consist of when recoded to UTF-8.  <a href="#a4f225b68f756f2406782a4ba90b933ed">More...</a><br /></td></tr>
 <tr class="separator:a4f225b68f756f2406782a4ba90b933ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41a842de30910f0f046ed10919188e37"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="shutf8_8h.html#structshutf8__utf8__c">shutf8_utf8_c</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a41a842de30910f0f046ed10919188e37">shutf8_encode_codepoint</a> (<a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> codepoint)</td></tr>
-<tr class="memdesc:a41a842de30910f0f046ed10919188e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode a UTF-32 codepoint into a UTF-8 sequence.  <a href="#a41a842de30910f0f046ed10919188e37">More...</a><br /></td></tr>
+<tr class="memdesc:a41a842de30910f0f046ed10919188e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes a UTF-32 codepoint into a UTF-8 sequence.  <a href="#a41a842de30910f0f046ed10919188e37">More...</a><br /></td></tr>
 <tr class="separator:a41a842de30910f0f046ed10919188e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b63f1743a9016d2b7a4ebbab3a379ce"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a3b63f1743a9016d2b7a4ebbab3a379ce">shutf8_encode</a> (const <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> *source)</td></tr>
-<tr class="memdesc:a3b63f1743a9016d2b7a4ebbab3a379ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode a UTF-32 string to UTF-8, allocating space for the resulting string on the heap.  <a href="#a3b63f1743a9016d2b7a4ebbab3a379ce">More...</a><br /></td></tr>
+<tr class="memdesc:a3b63f1743a9016d2b7a4ebbab3a379ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes a UTF-32 string to UTF-8, allocating space for the resulting string on the heap.  <a href="#a3b63f1743a9016d2b7a4ebbab3a379ce">More...</a><br /></td></tr>
 <tr class="separator:a3b63f1743a9016d2b7a4ebbab3a379ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -135,7 +135,7 @@ len</td>
 </table>
 </div><div class="memdoc">
 
-<p>Decode the UTF-8 encoded codepoint residing at the supplied address into a UTF-32 value. </p>
+<p>Decodes the UTF-8 encoded codepoint residing at the supplied address into a UTF-32 value. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">cursor</td><td>Pointer into a UTF-8 encoded string. </td></tr>
@@ -170,7 +170,7 @@ len</td>
 </table>
 </div><div class="memdoc">
 
-<p>Encode a UTF-32 string to UTF-8, allocating space for the resulting string on the heap. </p>
+<p>Encodes a UTF-32 string to UTF-8, allocating space for the resulting string on the heap. </p>
 <p>Caller is responsible for freeing the memory of the returned string.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -206,7 +206,7 @@ len</td>
 </table>
 </div><div class="memdoc">
 
-<p>Encode a UTF-32 codepoint into a UTF-8 sequence. </p>
+<p>Encodes a UTF-32 codepoint into a UTF-8 sequence. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">codepoint</td><td>UTF-32 codepoint. </td></tr>
