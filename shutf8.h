@@ -120,13 +120,13 @@ static shutf8_utf32_c shutf8_decode_codepoint(const char* cursor) {
         /* Mask: 00011111 00111111 */
         return ((c[0] & 0x1f) << 6) | (c[1] & 0x3f);
     case 0xe0:
-        if (((c[1] | c[2]) & 0xc0) != 0x80) {
+        if (((c[1] & c[2]) & 0xc0) != 0x80) {
             return -1;
         }
         /* Mask: 00001111 00111111 00111111 */
         return ((c[0] & 0x0f) << 12) | ((c[1] & 0x3f) << 6) | (c[2] & 0x3f);
     case 0xf0:
-        if (((c[1] | c[2] | c[3]) & 0xc0) != 0x80) {
+        if (((c[1] & c[2] & c[3]) & 0xc0) != 0x80) {
             return -1;
         }
         /* Mask: 00000111 00111111 00111111 00111111 */
@@ -147,12 +147,12 @@ static const char* shutf8_step(const char* cursor) {
     }
     switch (*c & 0xf0) {
     case 0xf0:
-        if (((c[1] | c[2] | c[3]) & 0xc0) != 0x80) {
+        if (((c[1] & c[2] & c[3]) & 0xc0) != 0x80) {
             return cursor;
         }
         return &(cursor[4]);
     case 0xe0:
-        if (((c[1] | c[2]) & 0xc0) != 0x80) {
+        if (((c[1] & c[2]) & 0xc0) != 0x80) {
             return cursor;
         }
         return &(cursor[3]);

@@ -1,4 +1,5 @@
-OBJECTS = test_shutf8.o test_decode_codepoint.o test_step.o
+OBJECTS = test_shutf8.o test_decode_codepoint.o test_encode_codepoint.o\
+		  test_step.o
 
 CFLAGS += -std=c89 -g
 
@@ -12,7 +13,11 @@ run_tests : test_shutf8
 test_shutf8 : $(OBJECTS)
 	$(CC) -std=c89 -o $@ -g $^
 
-test_decode_codepoint.o test_step.o : tesht.h ../shutf8.h
+$(OBJECTS) : tesht.h ../shutf8.h
+
+test_decode_codepoint.o : test_decode_codepoint.h
+test_encode_codepoint.o : test_encode_codepoint.h
+test_step.o : test_step.h
 
 .PHONY: clean
 clean :
