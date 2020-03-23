@@ -1,5 +1,5 @@
-OBJECTS = test_shutf8.o test_decode_codepoint.o test_encode_codepoint.o\
-		  test_step.o
+OBJECTS = test_shutf8.o test_decode_codepoint.o test_encode.o\
+		  test_encode_codepoint.o test_step.o
 
 CFLAGS += -std=c89 -g
 
@@ -16,6 +16,7 @@ test_shutf8 : $(OBJECTS)
 $(OBJECTS) : tesht.h ../shutf8.h
 
 test_decode_codepoint.o : test_decode_codepoint.h
+test_encode.o : test_encode.h
 test_encode_codepoint.o : test_encode_codepoint.h
 test_step.o : test_step.h
 
