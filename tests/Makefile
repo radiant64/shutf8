@@ -12,7 +12,7 @@ run_tests : test_shutf8
 test_shutf8 : $(OBJECTS)
 	$(CC) -std=c89 -o $@ -g $^
 
-test_decode_codepoint.o test_step.o : shtest.h ../shutf8.h
+test_decode_codepoint.o test_step.o : tesht.h ../shutf8.h
 
 .PHONY: clean
 clean :

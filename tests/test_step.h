@@ -1,7 +1,7 @@
 #ifndef TEST_STEP_H
 #define TEST_STEP_H
 
-#include "shtest.h"
+#include "tesht.h"
 
 EXTERN_TESTSUITE(step);
 
