@@ -59,24 +59,27 @@ typedef struct <a class="el" href="shutf8_8h.html#structshutf8__utf8__c">shutf8_
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:afce88752f1406b12380fb4f98aff2141"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#afce88752f1406b12380fb4f98aff2141">shutf8_decode_codepoint</a> (const char *cursor)</td></tr>
-<tr class="memdesc:afce88752f1406b12380fb4f98aff2141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes the UTF-8 encoded codepoint residing at the supplied address into a UTF-32 value.  <a href="#afce88752f1406b12380fb4f98aff2141">More...</a><br /></td></tr>
-<tr class="separator:afce88752f1406b12380fb4f98aff2141"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2a1ac2c89e8199c3254205938fa73128"><td class="memItemLeft" align="right" valign="top">static const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a2a1ac2c89e8199c3254205938fa73128">shutf8_step</a> (const char *cursor)</td></tr>
 <tr class="memdesc:a2a1ac2c89e8199c3254205938fa73128"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the next codepoint in the supplied UTF-8 encoded string.  <a href="#a2a1ac2c89e8199c3254205938fa73128">More...</a><br /></td></tr>
 <tr class="separator:a2a1ac2c89e8199c3254205938fa73128"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce88752f1406b12380fb4f98aff2141"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#afce88752f1406b12380fb4f98aff2141">shutf8_decode_codepoint</a> (const char *cursor)</td></tr>
+<tr class="memdesc:afce88752f1406b12380fb4f98aff2141"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes the UTF-8 encoded codepoint residing at the supplied address into a UTF-32 value.  <a href="#afce88752f1406b12380fb4f98aff2141">More...</a><br /></td></tr>
+<tr class="separator:afce88752f1406b12380fb4f98aff2141"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5928183de5bc34b3554dc8c80a4d47ef"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a5928183de5bc34b3554dc8c80a4d47ef">shutf8_decode_alloc</a> (const char *source)</td></tr>
+<tr class="memdesc:a5928183de5bc34b3554dc8c80a4d47ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Decodes a UTF-8 encoded string into UTF-32, allocating space for the result.  <a href="#a5928183de5bc34b3554dc8c80a4d47ef">More...</a><br /></td></tr>
+<tr class="separator:a5928183de5bc34b3554dc8c80a4d47ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f225b68f756f2406782a4ba90b933ed"><td class="memItemLeft" align="right" valign="top">static unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a4f225b68f756f2406782a4ba90b933ed">shutf8_encoded_length</a> (<a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> codepoint)</td></tr>
 <tr class="memdesc:a4f225b68f756f2406782a4ba90b933ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines how many octets the UTF-32 codepoint would consist of when recoded to UTF-8.  <a href="#a4f225b68f756f2406782a4ba90b933ed">More...</a><br /></td></tr>
 <tr class="separator:a4f225b68f756f2406782a4ba90b933ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41a842de30910f0f046ed10919188e37"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="shutf8_8h.html#structshutf8__utf8__c">shutf8_utf8_c</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a41a842de30910f0f046ed10919188e37">shutf8_encode_codepoint</a> (<a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> codepoint)</td></tr>
 <tr class="memdesc:a41a842de30910f0f046ed10919188e37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes a UTF-32 codepoint into a UTF-8 sequence.  <a href="#a41a842de30910f0f046ed10919188e37">More...</a><br /></td></tr>
 <tr class="separator:a41a842de30910f0f046ed10919188e37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b63f1743a9016d2b7a4ebbab3a379ce"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a3b63f1743a9016d2b7a4ebbab3a379ce">shutf8_encode</a> (const <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> *source)</td></tr>
-<tr class="memdesc:a3b63f1743a9016d2b7a4ebbab3a379ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes a UTF-32 string to UTF-8, allocating space for the resulting string on the heap.  <a href="#a3b63f1743a9016d2b7a4ebbab3a379ce">More...</a><br /></td></tr>
-<tr class="separator:a3b63f1743a9016d2b7a4ebbab3a379ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c9c6db46e4b9ef1177f4e82160dbd05"><td class="memItemLeft" align="right" valign="top">static char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="shutf8_8h.html#a7c9c6db46e4b9ef1177f4e82160dbd05">shutf8_encode_alloc</a> (const <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> *source)</td></tr>
+<tr class="memdesc:a7c9c6db46e4b9ef1177f4e82160dbd05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encodes a UTF-32 string into UTF-8, allocating space for the result.  <a href="#a7c9c6db46e4b9ef1177f4e82160dbd05">More...</a><br /></td></tr>
+<tr class="separator:a7c9c6db46e4b9ef1177f4e82160dbd05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Single Header UTF-8 version 2.0.0 </p>
+<div class="textblock"><p>Single Header UTF-8 version 2.1.0 </p>
 </div><hr/><h2 class="groupheader">Data Structure Documentation</h2>
 <a name="structshutf8__utf8__c" id="structshutf8__utf8__c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#structshutf8__utf8__c">&#9670;&nbsp;</a></span>shutf8_utf8_c</h2>
@@ -111,6 +114,44 @@ len</td>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a5928183de5bc34b3554dc8c80a4d47ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5928183de5bc34b3554dc8c80a4d47ef">&#9670;&nbsp;</a></span>shutf8_decode_alloc()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a>* shutf8_decode_alloc </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Decodes a UTF-8 encoded string into UTF-32, allocating space for the result. </p>
+<p>The zero-terminated UTF-8 string residing at the supplied address will be decoded into a zero terminated UTF-32 string, allocating as much heap memory as is necessary to hold the new string.</p>
+<p>Caller is responsible for freeing the allocated memory.</p>
+<p>This operation is O(2n), since it will need to iterate over the string once to count how many codepoints it contains, and then again to populate the codepoints after the required memory has been allocated.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">source</td><td>Pointer to a UTF-8 encoded string. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A newly allocated string of UTF-32 characters, or NULL on failure (illegal codepoint or failed memory allocation). </dd></dl>
+
+</div>
+</div>
 <a id="afce88752f1406b12380fb4f98aff2141"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afce88752f1406b12380fb4f98aff2141">&#9670;&nbsp;</a></span>shutf8_decode_codepoint()</h2>
 
@@ -146,8 +187,8 @@ len</td>
 
 </div>
 </div>
-<a id="a3b63f1743a9016d2b7a4ebbab3a379ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3b63f1743a9016d2b7a4ebbab3a379ce">&#9670;&nbsp;</a></span>shutf8_encode()</h2>
+<a id="a7c9c6db46e4b9ef1177f4e82160dbd05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c9c6db46e4b9ef1177f4e82160dbd05">&#9670;&nbsp;</a></span>shutf8_encode_alloc()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -156,7 +197,7 @@ len</td>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static char* shutf8_encode </td>
+          <td class="memname">static char* shutf8_encode_alloc </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> *&#160;</td>
           <td class="paramname"><em>source</em></td><td>)</td>
@@ -170,8 +211,10 @@ len</td>
 </table>
 </div><div class="memdoc">
 
-<p>Encodes a UTF-32 string to UTF-8, allocating space for the resulting string on the heap. </p>
-<p>Caller is responsible for freeing the memory of the returned string.</p>
+<p>Encodes a UTF-32 string into UTF-8, allocating space for the result. </p>
+<p>The supplied zero-terminated UTF-32 string will be encoded into zero-terminated UTF-8, allocating as much heap memory as is necesary to hold the new string.</p>
+<p>Caller is responsible for freeing the allocated memory.</p>
+<p>This operation is O(2n), since it will first iterate over the codepoints to determine the total number of octets in the resulting string, and then again when encoding the string after allocating the required memory.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">source</td><td>A string of <a class="el" href="shutf8_8h.html#a1df3bc178ba0895e4ecedb4f0d8b531a">shutf8_utf32_c</a> codepoints. </td></tr>
@@ -283,7 +326,7 @@ len</td>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A pointer to the beginning of the next codepoint in the provided string. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>A pointer to the beginning of the next codepoint in the provided string, alternatively <code>cursor</code> if the codepoint at <code>cursor</code> is 0, or NULL if it is invalid. </dd></dl>
 
 </div>
 </div>

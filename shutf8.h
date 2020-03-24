@@ -3,7 +3,7 @@
 /**
  * @file shutf8.h
  * Single Header UTF-8
- * version 2.0.0
+ * version 2.1.0
  */ 
 /* Copyright (c) Martin Evald
  *
