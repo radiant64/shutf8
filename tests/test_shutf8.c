@@ -1,6 +1,7 @@
 #include "test_decode_codepoint.h"
 #include "test_encode_codepoint.h"
-#include "test_encode.h"
+#include "test_decode_alloc.h"
+#include "test_encode_alloc.h"
 #include "test_step.h"
 
 int main(int argc, char** argv) {
@@ -13,7 +14,11 @@ int main(int argc, char** argv) {
         run_tests(&suite);
     }
     {
-        t_testsuite suite = prepare_encode();
+        t_testsuite suite = prepare_decode_alloc();
+        run_tests(&suite);
+    }
+    {
+        t_testsuite suite = prepare_encode_alloc();
         run_tests(&suite);
     }
     {

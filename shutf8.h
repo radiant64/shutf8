@@ -59,6 +59,16 @@ typedef struct shutf8_utf8_c {
 } shutf8_utf8_c;
 
 /**
+ * @brief Returns a pointer to the next codepoint in the supplied UTF-8 encoded
+ * string.
+ * @param cursor Pointer into a UTF-8 encoded string.
+ * @return A pointer to the beginning of the next codepoint in the provided
+ * string, alternatively @p cursor if the codepoint at @p cursor is 0, or NULL
+ * if it is invalid.
+ */
+static const char* shutf8_step(const char* cursor);
+
+/**
  * @brief Decodes the UTF-8 encoded codepoint residing at the supplied address
  * into a UTF-32 value.
  * @param cursor Pointer into a UTF-8 encoded string.
@@ -67,13 +77,24 @@ typedef struct shutf8_utf8_c {
 static shutf8_utf32_c shutf8_decode_codepoint(const char* cursor);
 
 /**
- * @brief Returns a pointer to the next codepoint in the supplied UTF-8 encoded
- * string.
- * @param cursor Pointer into a UTF-8 encoded string.
- * @return A pointer to the beginning of the next codepoint in the provided
- * string.
+ * @brief Decodes a UTF-8 encoded string into UTF-32, allocating space for the
+ * result.
+ *
+ * The zero-terminated UTF-8 string residing at the supplied address will be
+ * decoded into a zero terminated UTF-32 string, allocating as much heap memory
+ * as is necessary to hold the new string.
+ * 
+ * Caller is responsible for freeing the allocated memory.
+ * 
+ * This operation is O(2n), since it will need to iterate over the string once
+ * to count how many codepoints it contains, and then again to populate the
+ * codepoints after the required memory has been allocated.
+ *
+ * @param source Pointer to a UTF-8 encoded string.
+ * @return A newly allocated string of UTF-32 characters, or NULL on failure
+ * (illegal codepoint or failed memory allocation).
  */
-static const char* shutf8_step(const char* cursor);
+static shutf8_utf32_c* shutf8_decode_alloc(const char* source);
 
 /**
  * @brief Determines how many octets the UTF-32 codepoint would consist of when
@@ -91,24 +112,60 @@ static unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint);
 static shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint);
 
 /**
- * @brief Encodes a UTF-32 string to UTF-8, allocating space for the resulting
- * string on the heap.
+ * @brief Encodes a UTF-32 string into UTF-8, allocating space for the result.
  *
- * Caller is responsible for freeing the memory of the returned string.
+ * The supplied zero-terminated UTF-32 string will be encoded into
+ * zero-terminated UTF-8, allocating as much heap memory as is necesary to hold
+ * the new string.
+ *
+ * Caller is responsible for freeing the allocated memory.
+ *
+ * This operation is O(2n), since it will first iterate over the codepoints to
+ * determine the total number of octets in the resulting string, and then again
+ * when encoding the string after allocating the required memory.
  *
  * @param source A string of @ref shutf8_utf32_c codepoints.
  * @return A newly allocated string of UTF-8 characters, or NULL on failure
  * (illegal codepoint or failed memory allocation).
  */
-static char* shutf8_encode(const shutf8_utf32_c* source);
+static char* shutf8_encode_alloc(const shutf8_utf32_c* source);
 
 /**
  * @cond NON_DOXYGEN
  */
 
+static const char* shutf8_step(const char* cursor) {
+    const unsigned char* c = cursor;
+    if (!*c) {
+        return cursor;
+    } else if (((*c & 0x80) && (*c < 0xc0)) || (*c >= 0xf1)) {
+        /* Malformed UTF-8 character. */
+        return NULL;
+    }
+    switch (*c & 0xf0) {
+    case 0xf0:
+        if (((c[1] & c[2] & c[3]) & 0xc0) != 0x80) {
+            return NULL;
+        }
+        return &(cursor[4]);
+    case 0xe0:
+        if (((c[1] & c[2]) & 0xc0) != 0x80) {
+            return NULL;
+        }
+        return &(cursor[3]);
+    case 0xc0:
+        if ((c[1] & 0xc0) != 0x80) {
+            return NULL;
+        }
+        return &(cursor[2]);
+    default:
+        return &(cursor[1]);
+    }
+}
+
 static shutf8_utf32_c shutf8_decode_codepoint(const char* cursor) {
     const unsigned char* c = cursor;
-    if ((*c & 0x80) && (*c < 0xc0) || (*c >= 0xf1)) {
+    if (((*c & 0x80) && (*c < 0xc0)) || (*c >= 0xf1)) {
         /* Malformed UTF-8 character. */
         return -1;
     }
@@ -139,31 +196,32 @@ static shutf8_utf32_c shutf8_decode_codepoint(const char* cursor) {
     }
 }
 
-static const char* shutf8_step(const char* cursor) {
-    const unsigned char* c = cursor;
-    if ((*c & 0x80) && (*c < 0xc0) || (*c >= 0xf1)) {
-        /* Malformed UTF-8 character. */
-        return cursor;;
+static shutf8_utf32_c* shutf8_decode_alloc(const char* source) {
+    shutf8_utf32_c* target;
+    size_t i;
+    const char* cursor = source;
+    size_t len = 0;
+    while (*cursor) { 
+        len++;
+        cursor = shutf8_step(cursor);
+        if (!cursor) {
+            return NULL;
+        }
     }
-    switch (*c & 0xf0) {
-    case 0xf0:
-        if (((c[1] & c[2] & c[3]) & 0xc0) != 0x80) {
-            return cursor;
-        }
-        return &(cursor[4]);
-    case 0xe0:
-        if (((c[1] & c[2]) & 0xc0) != 0x80) {
-            return cursor;
-        }
-        return &(cursor[3]);
-    case 0xc0:
-        if ((c[1] & 0xc0) != 0x80) {
-            return cursor;
-        }
-        return &(cursor[2]);
-    default:
-        return &(cursor[1]);
+
+    target = malloc(sizeof(shutf8_utf32_c) * (len + 1));
+    if (!target) {
+        return NULL;
     }
+
+    cursor = source;
+    for (i = 0; i < len; ++i) {
+        target[i] = shutf8_decode_codepoint(cursor);
+        cursor = shutf8_step(cursor);
+    }
+    target[len] = 0;
+
+    return target;
 }
 
 static unsigned char shutf8_encoded_length(shutf8_utf32_c codepoint) {
@@ -214,7 +272,7 @@ static shutf8_utf8_c shutf8_encode_codepoint(shutf8_utf32_c codepoint) {
     return (shutf8_utf8_c) { len, b[0], b[1], b[2], b[3] };
 }
 
-static char* shutf8_encode(const shutf8_utf32_c* source) {
+static char* shutf8_encode_alloc(const shutf8_utf32_c* source) {
     char* target;
     size_t c_len;
     size_t len = 0;

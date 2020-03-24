@@ -18,8 +18,8 @@ extern "C" {
 #define _STR(N) _STR_EXPAND(N)
 #define _STR_EXPAND(N) #N
 #define TEST(IDENT) static void IDENT ## _func(t_test*);\
-    static t_test IDENT ## obj = { #IDENT, IDENT ## _func };\
-    static t_test* IDENT = &IDENT ## obj;\
+    static t_test IDENT ## _obj = { #IDENT, IDENT ## _func };\
+    static t_test* IDENT = &IDENT ## _obj;\
     static void IDENT ## _func(t_test* _test)
 
 #define TESTSUITE(NAME) t_testsuite prepare_ ## NAME(void) {\
