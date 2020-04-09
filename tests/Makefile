@@ -10,8 +10,11 @@ all : test_shutf8
 run_tests : test_shutf8
 	./test_shutf8
 
-test_shutf8 : $(OBJECTS)
+test_shutf8 : shutf8.o $(OBJECTS)
 	$(CC) -std=c89 -o $@ -g $^
+
+shutf8.o : ../shutf8.c ../shutf8.h
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(OBJECTS) : tesht.h ../shutf8.h
 

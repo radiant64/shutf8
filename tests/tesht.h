@@ -5,12 +5,8 @@
 extern "C" {
 #endif
 
-#include <stdio.h>
-#if __STDC_VERSION__ >= 19990L
 #include <stddef.h>
-#else
-#include <stdlib.h>
-#endif
+#include <stdio.h>
 
 #define FALSE ((t_bool) 0)
 #define TRUE (!FALSE)

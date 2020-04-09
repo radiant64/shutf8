@@ -1,11 +1,17 @@
 # Single Header UTF-8 (shutf8)
 
-A single, ANSI C89 compliant header file providing some basic functionality for
-working with UTF-8 encoded strings.
+A single header, single translation unit ANSI C89 compliant library providing
+some basic functionality for working with UTF-8 encoded strings. Building from
+source requires no special invocation, and the code is intended to be used
+directly as a part of other projects. It is released under a permissive
+[MIT license](LICENSE).
 
 ## Usage
 
-Include `shutf8.h` in your project. API documentation is available in the 
+Copy `shutf8.c` and `shutf8.h` into your project's source folder. Include
+`shutf8.h` as you would do for any project header. If you want to keep the
+header file in a different folder than the .c file, you need to edit the include
+at the top of the latter to reflect this. API documentation is available in the
 [docs](docs) folder of the repository, and also
 [hosted on GitHub](https://radiant64.github.io/shutf8/).
 
